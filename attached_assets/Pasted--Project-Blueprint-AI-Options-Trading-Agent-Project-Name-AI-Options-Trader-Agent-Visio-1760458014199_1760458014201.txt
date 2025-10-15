@@ -1,0 +1,352 @@
+.
+
+💎 Project Blueprint: AI Options Trading Agent
+🚀 Project Name
+
+AI Options Trader Agent
+
+🌟 Vision
+
+You want a next-generation, AI-powered options trading platform that:
+
+Integrates with Upstox API for live data and trade execution
+
+Uses AI to learn from paper trades, recognize market patterns, and evolve daily
+
+Suggests high-confidence entry and exit points
+
+Trades with strict rules, risk controls, and limited auto-trades
+
+Is plug-and-play, with zero coding needed for the user
+
+Offers a professional dashboard UI that’s clear, elegant, and data-rich
+
+⚙️ Modes of Operation
+1️⃣ Paper Trading Mode (AI Learning Mode)
+
+Default mode for AI learning and testing
+
+Auto-paper-trades the Top 5 gainers and Top 5 losers across:
+
+NIFTY, BANKNIFTY, FINNIFTY, SENSEX
+
+Analyzes ATM, ITM, OTM strikes for each
+
+Takes simulated entries/exits
+
+Logs each trade (reason, confidence, Greeks, OI, volume, etc.)
+
+Improves daily accuracy (goal: 99.9% after 30 days)
+
+Generates PDF & Excel learning summaries
+
+2️⃣ Live Trading Mode (Strict Rules)
+
+User must enable manually (“Enable Live Trading” toggle)
+
+Uses AI signals but trades are user-confirmed
+
+AI checks multiple parameters — only if all are satisfied:
+
+Places 1–2 trades per day max
+
+Uses default stock/index & quantity unless user overrides
+
+Ensures risk limits, spread, liquidity, and OI checks pass
+
+All trades journaled in real time
+
+If AI finds no valid setup → it will skip trades automatically
+
+🧠 AI Decision Engine
+🔍 Multi-Parameter Conditions Before Any Trade
+
+Each trade decision passes through these AI checks:
+
+Parameter	Description
+Delta (Δ)	Measures directional bias; must exceed threshold (e.g.,
+OI Change	Detects strong build-up of positions
+Volume Trend	Confirms real market participation
+Price Momentum	LTP vs SMA/VWAP
+Implied Volatility (IV)	Avoids excessive volatility
+Spread Quality	Ask-Bid difference ≤ predefined limit
+Liquidity Depth	Checks top 5 bid/ask quantities
+Time Window	Only valid between 09:15–15:30 IST
+Risk Limit	Ensures no breach of per-trade/day max loss
+Confidence Score	Aggregated AI score ≥ 0.6 threshold
+
+✅ If all checks pass → trade allowed
+❌ If any check fails → “No Trade” signal generated
+
+🧮 AI Learning System
+
+Learns daily from paper trades
+
+Stores feature-outcome relationships
+
+Adjusts weights (like delta importance, OI importance, etc.)
+
+Maintains a 30-day adaptive learning window
+
+Tracks and visualizes its learning improvement (accuracy curve)
+
+🧾 Reporting & Journaling
+🔹 Trade Journal
+
+For each trade (paper or live), save:
+
+Symbol / Strike
+
+Entry & Exit time
+
+Entry & Exit price
+
+Reason & parameters
+
+AI confidence %
+
+Profit/Loss
+
+Risk impact
+
+🔹 Reports
+
+Automatically generate:
+
+Daily PDF report (PnL, accuracy, charts, insights)
+
+Excel sheet (trade logs, metrics, reasons)
+
+Learning curve graph (AI accuracy trend)
+
+All downloadable from the app
+
+⚖️ Risk Management (Optional Toggle)
+
+Default: Enabled
+
+Settings include:
+
+Max loss per trade
+
+Max daily drawdown
+
+Auto stop-loss and take-profit suggestions
+
+Position size = 1 lot by default
+
+When disabled: AI will alert but not restrict
+
+🔐 Authentication
+
+Upstox API login with API Key + Redirect URL
+
+Saves token securely (asks only password next time)
+
+Supports .env file storage for security
+
+In mock mode, app runs with sample data (for testing)
+
+📊 Dashboard Overview (UI)
+Main Sections:
+Section	Description
+Dashboard	Summary of performance, PnL, current trades, accuracy
+Option Chain	Live CE/PE data with Greeks, OI, top 5 bid/ask
+AI Signals	Live buy/exit recommendations with reasoning & confidence
+Journal	Full trade history (sortable & filterable)
+Reports	PDF/Excel downloads, charts
+Settings	API key, paper/live toggle, lot size, risk config
+🎨 UI / UX Guidelines
+🖥️ Design Layout
+
+Modern, sleek professional interface
+
+Built using Streamlit or React + TailwindCSS
+
+Dark mode (default) + Light mode option
+
+3-Column Dashboard Layout:
+
+Left Sidebar
+
+Logo & app name
+
+Navigation tabs
+
+Mode toggle (Paper / Live)
+
+Risk toggle
+
+Settings button
+
+Main Panel
+
+Chart area (line/candle + OI + AI markers)
+
+Option chain table
+
+AI signal cards
+
+Right Panel
+
+PnL summary
+
+Top 5 Gainers/Losers list
+
+Quick trade actions
+
+📈 Charts
+
+Use Plotly or TradingView widget
+
+Charts:
+
+Price vs Time (Candlestick)
+
+OI vs Time
+
+Combined AI Signal Chart (entry/exit markers)
+
+Show trade markers and annotations for reasoning
+
+🧩 Option Chain Table
+
+Columns:
+
+Strike	LTP	Δ	Γ	Θ	Vega	IV	OI	ΔOI%	Bid	Ask	Signal	Confidence
+
+Visual cues:
+
+🔵 = Potential Buy
+
+🔴 = Exit/Sell
+
+⚪ = Hold/Wait
+
+Confidence color scale (green = strong, red = weak)
+
+🧭 AI Signal Cards
+
+Each signal card should display:
+
+Symbol + Strike
+
+Direction (BUY / EXIT)
+
+Confidence %
+
+Reason (e.g., “Delta ↑, OI ↑, LTP > VWAP”)
+
+Time
+
+Action buttons:
+
+[Simulate (Paper)]
+
+[Execute (Live)]
+
+🧱 Backend Architecture
+Languages & Frameworks
+
+Python (core logic)
+
+Streamlit (frontend UI)
+
+SQLite / PostgreSQL (database)
+
+Pandas / NumPy (data analytics)
+
+scikit-learn / TensorFlow (optional) (AI model)
+
+ReportLab + XlsxWriter (report generation)
+
+Folder Structure
+ai_options_trader_agent/
+│
+├── app.py                # Main Streamlit app
+├── requirements.txt
+├── .env.example
+├── core/
+│   ├── auth.py           # Upstox login/token
+│   ├── market.py         # Option chain data
+│   ├── greeks.py         # Greek calculations
+│   ├── signals.py        # AI signal generation logic
+│   ├── risk.py           # Risk management engine
+│   ├── paper_trade.py    # Paper trading engine
+│   ├── live_trade.py     # Live trade manager
+│   ├── journal.py        # Trade journal system
+│   ├── reports.py        # PDF & Excel report generator
+│   ├── ai_learn.py       # AI learning model
+│
+├── data/
+│   ├── mock_data.json
+│   └── trades.db
+│
+└── README.md
+
+⚙️ Technical Features
+
+Real-time Upstox API integration
+
+Mock mode for no-API testing
+
+Live PnL calculation per trade
+
+Trade logs auto-saved
+
+Multi-timeframe charting
+
+Configurable parameters in UI
+
+Auto-learning system (reward/punish algorithm)
+
+🧾 Output Reports
+
+Daily Performance Summary
+
+Trade History Excel File
+
+AI Learning Summary (Accuracy & Improvement Graphs)
+
+PnL chart & analytics
+
+All reports downloadable
+
+📤 Deliverables for Replit to Generate
+
+Complete Python + Streamlit app
+
+All core logic files in /core/
+
+Ready-to-run app (streamlit run app.py)
+
+Mock data mode (no Upstox login needed)
+
+.env.example with placeholders
+
+requirements.txt
+
+README.md (setup + usage)
+
+Optional ZIP bundle
+
+🧭 Deployment
+
+Platform: Replit or AWS (later)
+
+Port: 8501 (default for Streamlit)
+
+Hosting Options:
+
+Replit always-on deployment
+
+Future migration to AWS EC2 or DigitalOcean
+
+🧠 Prompt Summary (Copy & Paste into Replit Ghostwriter)
+
+“Build a full-stack AI-powered options trading app called AI Options Trader Agent using Python and Streamlit.
+The app integrates with Upstox API (mock mode available).
+It supports Paper and Live trading modes, has AI-based trade signals using Greeks, OI, IV, and confidence scoring, and follows strict risk controls.
+The AI should auto-paper-trade top 5 gainers and losers daily, learn from results, and improve accuracy.
+The UI must include charts, option chains, signal cards, journals, reports, and settings — all as per professional trading dashboard standards described above.
+The folder structure, backend logic, UI layout, and report generation should exactly match the specifications.”
